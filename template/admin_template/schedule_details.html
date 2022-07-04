@@ -1,0 +1,365 @@
+{% extends 'Admin_App/base.html' %}
+
+{% load static %}
+{% block main_content %}
+
+<main class="app-content">
+  <div class="app-title">
+    <div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item active"><a href="{{players}}"><i class="fa fa-dashboard"></i> Playerss</a></li>
+      </ul>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item active"><button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#add_team">Match Info</button>
+      </li>
+    </ul>
+    <div class="modal" id="add_team" >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Player</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          </div>
+          <form method="POST" action="" enctype="multipart/form-data">
+          <div class="modal-body">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <input class="form-control" type="text" name="name" value="{{player.name}}">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Age</label>
+                    <input class="form-control" type="text" name="age" value="{{player.age}}">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Address</label>
+                    <input class="form-control" type="text" name="address" value="{{player.address}}">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">Role</label>
+                    <select class="form-control" name="role">
+                      <option value="Batsman" {% if player.role == "Batsman" %}selected{% endif %}>Batsman</option>
+                      <option value="Bowler" {% if player.role == "Bowler" %}selected{% endif %}>Bowler</option>
+                      <option value="Allrounder" {% if player.role == "Allrounder" %}selected{% endif %}>Allrounder</option>
+                      <option value="Batting Allrounder" {% if player.role == "Batting Allrounder" %}selected{% endif %}>Batting Allrounder</option>
+                      <option value="Bowling Allrounder" {% if player.role == "Bowling Allrounder" %}selected{% endif %}>Bowling Allrounder</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-group">
+                    <label class="control-label">Batting Style</label>
+                    <select class="form-control" name="batting_style">
+                      <option value="Right Handed Bat" {% if player.batting_style == "Right Handed Bat" %}selected{% endif %}>Right Handed Bat</option>
+                      <option value="Left Handed Bat" {% if player.batting_style == "Left Handed Bat" %}selected{% endif %} >Left Handed Bat</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-group">
+                    <label class="control-label">Bowling Style</label>
+                    <select class="form-control" name="bowling_style">
+                      <option value="Right-arm Fast-medium" {% if player.bowling_style == "Right-arm Fast-medium" %}selected{% endif %} >Right-arm Fast-medium</option>
+                      <option value="Right-arm Medium" {% if player.bowling_style == "Right-arm Medium" %}selected{% endif %} >Right-arm Medium</option>
+                      <option value="Right-arm Offbreak" {% if player.bowling_style == "Right-arm Offbreak" %}selected{% endif %} >Right-arm Offbreak</option>
+                      <option value="Right-arm Legbreak" {% if player.bowling_style == "Right-arm Legbreak" %}selected{% endif %} >Right-arm Offbreak</option>
+                      <option value="Left-arm Fast-medium" {% if player.bowling_style == "Left-arm Fast-medium" %}selected{% endif %} >Left-arm Fast-medium</option>
+                      <option value="Left-arm Medium" {% if player.bowling_style == "Left-arm Medium" %}selected{% endif %} >Left-arm Medium</option>
+                      <option value="Left-arm Offbreak" {% if player.bowling_style == "Left-arm Offbreak" %}selected{% endif %} >Left-arm Offbreak</option>
+                      <option value="Left-arm Legbreak" {% if player.bowling_style == "Left-arm Legbreak" %}selected{% endif %} >Left-arm Offbreak</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label">Image</label>
+                <input class="form-control" type="file" name="image">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success" type="submit">Update</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <!-- team A -->
+    <div class="col-md-6">
+      <div class="tile">
+        <h5 class="tile-title">Team A ({{schedule.team_one.name}}) {% if squardA.count > 0 %}<button class="float-right btn btn-outline-info" type="button" data-toggle="modal" data-target="#edit_teamA_sqaurd">Edit Squard</button>{% else %}<button class="float-right btn btn-outline-primary" type="button" data-toggle="modal" data-target="#add_teamA_sqaurd">Add Squard</button>{% endif %}
+        </h5>
+        
+        <div class="modal" id="add_teamA_sqaurd" >
+          <div class="modal-dialog " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add Squard ({{schedule.team_one.name}})</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              </div>
+              <form method="POST" aaction="{% url 'schedule_details' id=schedule.id %}" >
+              <div class="modal-body">
+                  {% csrf_token %}
+                  <input type="hidden" name="team_id" value="{{schedule.team_one.id}}" id="">
+                  {% for ta in team_A %}
+                  <div style=" display: flex; justify-content: space-between;">
+                    <div class="animated-checkbox">
+                      <label>
+                        <input type="checkbox" name="player_id" value="{{ta.id}}" ><span class="label-text">{{ta.name}}</span>
+                      </label>
+                    </div>
+                    <div class="animated-radio-button">
+                      <label>
+                        <input type="radio" name="is_captain"  value="{{ta.id}}" ><span class="label-text">Captain</span>
+                      </label>
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Add</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+    
+            </div>
+          </div>
+        </div>
+
+        <div class="modal" id="edit_teamA_sqaurd" >
+          <div class="modal-dialog " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Squard ({{schedule.team_one.name}})</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              </div>
+              <form method="POST" action="{% url 'update_squard' id=schedule.id %}" >
+              <div class="modal-body">
+                  {% csrf_token %}
+                  <input type="hidden" name="team_id" value="{{schedule.team_one.id}}" id="">
+                    {% for a in squardA %}
+                      <div style=" display: flex; justify-content: space-between;">
+                        <div class="animated-checkbox">
+                          <label>
+                            <input type="checkbox" {%if a.is_play%}checked{%endif %} name="player_id" value="{{a.player.id}}"><span class="label-text">{{a.player.name}}</span>
+                          </label>
+                        </div>
+                        <div class="animated-radio-button">
+                          <label>
+                            <input type="radio" name="is_captain" {%if a.is_captain %}checked{%endif %} value="{{a.player.id}}" ><span class="label-text">Captain</span>
+                          </label>
+                        </div>
+                      </div>
+                    {%endfor%}
+                  
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success" type="submit">Update</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+    
+            </div>
+          </div>
+        </div>
+        <!-- end modal -->
+
+        <div>
+          <h6>Playing Squard</h6>
+          {% for a in squardA %}
+            {% if a.is_play%}
+              {{a.player.name}} {% if a.is_captain %}(C){%endif%},&nbsp;
+              {%endif%}
+          {% endfor%}
+        </div>
+        <div>
+          <h6 class="mt-2">Bench </h6>
+          {% for a in squardA %}
+            {% if not a.is_play%}
+              {{a.player.name}},&nbsp;
+            {% endif %}
+          {% endfor%}
+        </div>
+      
+      
+        
+      </div>
+    </div>
+    <!-- end team A -->
+
+    <!-- team B -->
+    <div class="col-md-6">
+      <div class="tile">
+        <h5 class="tile-title">Team B ({{schedule.team_two.name}}) 
+          {% if squardB.count > 0 %}<button class="float-right btn btn-outline-info" type="button" data-toggle="modal" data-target="#edit_teamB_sqaurd">Edit Squard</button>
+          {% else %}<button class="float-right btn btn-outline-primary" type="button" data-toggle="modal" data-target="#add_teamB_sqaurd">Add Squard</button>{% endif %}</h5>
+        
+        
+        <div class="modal" id="add_teamB_sqaurd" >
+          <div class="modal-dialog " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add Squard ({{schedule.team_two.name}})</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              </div>
+              <form method="POST" action="{% url 'schedule_details' id=schedule.id %}" >
+              <div class="modal-body">
+                  {% csrf_token %}
+                  <input type="hidden" name="team_id" value="{{schedule.team_two.id}}" id="">
+                  {% for ta in team_B %}
+                  <div style=" display: flex; justify-content: space-between;">
+                    <div class="animated-checkbox">
+                      <label>
+                        <input type="checkbox" name="player_id" value="{{ta.id}}"><span class="label-text">{{ta.name}}</span>
+                      </label>
+                    </div>
+                    <div class="animated-radio-button">
+                      <label>
+                        <input type="radio" name="is_captain"  value="{{ta.id}}" ><span class="label-text">Captain</span>
+                      </label>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Add</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+    
+            </div>
+          </div>
+        </div>
+
+        <div class="modal" id="edit_teamB_sqaurd" >
+          <div class="modal-dialog " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Squard ({{schedule.team_two.name}})</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              </div>
+              <form method="POST" action="{% url 'update_squard' id=schedule.id %}" >
+              <div class="modal-body">
+                  {% csrf_token %}
+                  <input type="hidden" name="team_id" value="{{schedule.team_two.id}}" id="">
+                    {% for a in squardB %}
+                      <div style=" display: flex; justify-content: space-between;">
+                        <div class="animated-checkbox">
+                          <label>
+                            <input type="checkbox" {%if a.is_play%}checked{%endif %} name="player_id" value="{{a.player.id}}"><span class="label-text">{{a.player.name}}</span>
+                          </label>
+                        </div>
+                        <div class="animated-radio-button">
+                          <label>
+                            <input type="radio" name="is_captain" {%if a.is_captain %}checked{%endif %} value="{{a.player.id}}" ><span class="label-text">Captain</span>
+                          </label>
+                        </div>
+                      </div>
+                    {%endfor%}
+                  
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-success" type="submit">Update</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+    
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h6>Playing Squard</h6>
+          {% for a in squardB %}
+            {% if a.is_play%}
+              {{a.player.name}} {% if a.is_captain %}(C){%endif%},&nbsp;
+              {%endif%}
+          {% endfor%}
+        </div>
+        <div>
+          <h6 class="mt-2">Bench </h6>
+          {% for a in squardB %}
+            {% if not a.is_play%}
+              {{a.player.name}},&nbsp;
+            {% endif %}
+          {% endfor%}
+        </div>
+
+      </div>
+    </div>
+    <!-- team B -->
+  </div>
+<div class="row">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-6">
+    <div class="tile">
+      <h5 class="tile-title">Toss </h5>
+      <div class="tile-body">
+        <form class="p-3" method="POST" action="{% url 'go_live' id=schedule.id %}">
+          {% csrf_token %}
+          <h6>Toss Own</h6>
+          <div class="form-group" style=" display: flex; ">
+              <div class="animated-radio-button">
+                <label>
+                  <input type="radio" name="toss_own" value="{{schedule.team_one.id}}" ><span class="label-text">{{schedule.team_one.name}} {{schedule.team_one.id}}</span>
+                </label>
+              </div>
+              <div class="animated-radio-button ml-3">
+                <label>
+                  <input type="radio" name="toss_own" value="{{schedule.team_two.id}}" ><span class="label-text">{{schedule.team_two.name}} {{schedule.team_two.id}}</span>
+                </label>
+              </div>
+           </div>   
+           <h6>Toss Own Option</h6>
+          <div class="form-group" style=" display: flex; ">
+              <div class="animated-radio-button">
+                <label>
+                  <input type="radio" name="toss_own_option" value="Elected To Bat First" ><span class="label-text">Elected To Bat First</span>
+                </label>
+              </div>
+              <div class="animated-radio-button ml-3">
+                <label>
+                  <input type="radio" name="toss_own_option" value="Elected To Bowl First" ><span class="label-text">Elected To Bowl First</span>
+                </label>
+              </div>
+           </div> 
+           <div class="form-group">
+            <label class="control-label">First Umpire</label>
+            <input class="form-control" type="text" name="umpire_one" placeholder="Enter Umpire Name">
+          </div>
+          <div class="form-group mb-3">
+            <label class="control-label">Second Umpire</label>
+            <input class="form-control" type="text" name="umpire_two" placeholder="Enter Umpire Name">
+          </div> 
+          <center><button class="btn btn-outline-info" type="submit">Go Live</button></center>
+        </form> 
+      </div>
+  </div>  
+  </div>
+  <div class="col-sm-3"></div>
+</div>
+  
+</main>
+{% endblock main_content %}
+
+
+
+{% block js %}
+<script type="text/javascript" src="{% static 'Admin_App/js/plugins/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'Admin_App/js/plugins/dataTables.bootstrap.min.js' %}"></script>
+<script type="text/javascript">
+  $('#sampleTable').DataTable();
+</script>
+{% endblock js %}

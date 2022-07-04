@@ -1,0 +1,197 @@
+{% extends 'admin_template/base.html' %}
+
+{% block main_content %}
+
+<main class="app-content">
+  <div class="app-title">
+    <div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+      </ul>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item active"><button class="btn btn-outline-primary" type="button" data-toggle="modal"
+          data-target="#add_team">Add Service Category</button>
+      </li>
+    </ul>
+    <div class="modal" id="add_team">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Category</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+          </div>
+          <form method="POST" action="{{service_category}}" enctype="multipart/form-data">
+            <div class="modal-body">
+              {% csrf_token %}
+              <div class="form-group">
+                <label class="control-label">Service Category Name</label>
+                <input class="form-control" type="text" name="name" placeholder="Enter Category Name">
+              </div>
+              <div class="form-group">
+                <label class="control-label">Image</label>
+                <input class="form-control" type="file" name="image">
+              </div>
+              <div class="form-group-inline">
+                <label class="control-label">Is Payable</label><br>
+                <input class="" type="radio" name="is_payable" value="False" checked><span class="ml-2">No</span>
+                <input class="" type="radio" name="is_payable" value="True"><span class="ml-2">Yes</span>
+              </div>
+              <div class="price-list">
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" type="submit">Add</button>
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tile">
+        <h3 class="tile-title">Category Lists</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Price</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in category %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td><a href="">{{c.name}}</a></td>
+              <td><img src="{{c.image.url}}" class="img-thumbnail border-border-success" width="60px" height="60px"
+                  alt="{{c.name}}"></td>
+              <td>{% if c.is_payable%}
+                {% for p in c.price.price %}
+                {{p.time}} - Rs: {{p.price}}<br>
+                {% endfor %}
+                {% else %} No Available {% endif %}</td>
+              <td><button class="btn btn-outline-primary" type="button" data-toggle="modal"
+                  data-target="#edit{{c.id}}">Edit</button></td>
+            </tr>
+            <div class="modal" id="edit{{c.id}}">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Category</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                  </div>
+                  <form method="POST" action="{{service_category}}" enctype="multipart/form-data">
+                    <div class="modal-body">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <label class="control-label">Category Name</label>
+                        <input class="form-control" type="text" name="name" value="{{c.name}}"
+                          placeholder="Enter Category Name">
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label">Image</label>
+                        <input class="form-control" type="file" name="image">
+                        <img src="{{c.image.url}}" class="img-thumbnail border-border-success mt-2" width="100px"
+                          height="100px" alt="{{c.name}}"></td>
+                      </div>
+
+                      {% if c.is_payable%}
+                      {% for p in c.price.price %}
+                      <div class="form-group row mt-2">
+                        <div class="col-sm-6">
+                          <label for="">Time</label>
+                          <input type="text" class="form-control" name="time" placeholder="* hour/day" value="{{p.time}}" required>
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="">Price</label>
+                          <input type="number" class="form-control" name="price" placeholder="Amount" value="{{p.price}}" required>
+                        </div>
+                        <div class="col-sm-2">
+                          <input type="button" class="btn btn-success mt-4" id="addprice" value="Add">
+                        </div>
+                      </div>
+                      {% endfor %}
+                      {% endif %}
+
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-primary" type="submit">Add</button>
+                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock main_content %}
+
+
+{% block js %}
+<script>
+
+  $(".price-list").on("click", "#addprice", function (event) {
+    var html_div = ""
+    html_div += '<div class="form-group row mt-2" >'
+    html_div += '<div class="col-sm-6">'
+    html_div += '<input type="text" class="form-control" name="time" placeholder="* hour/day" required>'
+    html_div += '</div>'
+    html_div += '<div class="col-sm-4">'
+    html_div += '<input type="number" class="form-control" name="price" placeholder="Amount" required>'
+    html_div += '</div>'
+    html_div += ' <div class="col-sm-2">'
+    html_div += '<input type="button" class="btn btn-danger remove_btn"  value="Del"> '
+    html_div += '</div>'
+    html_div += '</div >'
+    $(".price-list").append(html_div);
+  });
+
+  $('input[type="radio"]').click(function () {
+
+    if ($(this).attr("value") == "True") {
+      var html_div = ""
+      html_div += '<div class="form-group row mt-2" >'
+      html_div += '<div class="col-sm-6">'
+      html_div += '<label for="">Time</label>'
+      html_div += '<input type="text" class="form-control" name="time" placeholder="* hour/day" required>'
+      html_div += '</div>'
+      html_div += '<div class="col-sm-4">'
+      html_div += '<label for="">Price</label>'
+      html_div += '<input type="number" class="form-control" name="price" placeholder="Amount" required>'
+      html_div += '</div>'
+      html_div += ' <div class="col-sm-2">'
+      html_div += '<input type="button" class="btn btn-success mt-4" id="addprice"  value="Add"> '
+      html_div += '</div>'
+      html_div += '</div >'
+      $(".price-list").append(html_div);
+
+    }
+    if ($(this).attr("value") == "False") {
+      $(".price-list").empty();
+    }
+  });
+
+
+  $(".price-list").on("click", ".remove_btn", function (event) {
+    $(this).closest(".form-group").remove();
+  });
+
+</script>
+
+{% endblock js %}

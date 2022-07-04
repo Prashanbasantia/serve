@@ -1,0 +1,32 @@
+{% extends 'index_template/base.html' %}
+{% load static %}
+{% block content %}
+<section id="down" class="login-area sec-p">
+    <div class="container">
+        <div class="login-form">
+            {% include 'index_template/alert_msg.html' %}
+            <h3>Login Your Account</h3>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <label for="email">Email or Mobile*
+                    <input type="email" name="email" id="email" placeholder="Enter Your Email or Mobile">
+                </label>
+                <label for="password">Password*
+                    <i class="bi bi-eye-slash" id="togglePassword"></i>
+                    <input type="password" name="password" id="password" placeholder="Type Your Password">
+                </label>
+                <div class="terms-forgot">
+                    <a href="#">Forgot Your Password</a>
+                </div>
+                <input type="submit" value="Login" >
+            </form>
+            <div class="other-signup">
+                <div class="udlink">
+                    <span>New Member? <a href="{% url 'signup' %}">SignUp here</a></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock content %}

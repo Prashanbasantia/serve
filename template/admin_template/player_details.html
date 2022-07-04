@@ -1,0 +1,262 @@
+{% extends 'Admin_App/base.html' %}
+
+{% load static %}
+{% block main_content %}
+
+<main class="app-content">
+  <div class="app-title">
+    <div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item active"><a href="{{players}}"><i class="fa fa-dashboard"></i> Playerss</a></li>
+      </ul>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item active"><button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#add_team">Edit Player</button>
+      </li>
+    </ul>
+    <div class="modal" id="add_team" >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Player</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          </div>
+          <form method="POST" action="{% url 'player_details' id=player.id %}" enctype="multipart/form-data">
+          <div class="modal-body">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <input class="form-control" type="text" name="name" value="{{player.name}}">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Age</label>
+                    <input class="form-control" type="text" name="age" value="{{player.age}}">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label">Address</label>
+                    <input class="form-control" type="text" name="address" value="{{player.address}}">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">Role</label>
+                    <select class="form-control" name="role">
+                      <option value="Batsman" {% if player.role == "Batsman" %}selected{% endif %}>Batsman</option>
+                      <option value="Bowler" {% if player.role == "Bowler" %}selected{% endif %}>Bowler</option>
+                      <option value="Allrounder" {% if player.role == "Allrounder" %}selected{% endif %}>Allrounder</option>
+                      <option value="Batting Allrounder" {% if player.role == "Batting Allrounder" %}selected{% endif %}>Batting Allrounder</option>
+                      <option value="Bowling Allrounder" {% if player.role == "Bowling Allrounder" %}selected{% endif %}>Bowling Allrounder</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-group">
+                    <label class="control-label">Batting Style</label>
+                    <select class="form-control" name="batting_style">
+                      <option value="Right Handed Bat" {% if player.batting_style == "Right Handed Bat" %}selected{% endif %}>Right Handed Bat</option>
+                      <option value="Left Handed Bat" {% if player.batting_style == "Left Handed Bat" %}selected{% endif %} >Left Handed Bat</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-group">
+                    <label class="control-label">Bowling Style</label>
+                    <select class="form-control" name="bowling_style">
+                      <option value="Right-arm Fast-medium" {% if player.bowling_style == "Right-arm Fast-medium" %}selected{% endif %} >Right-arm Fast-medium</option>
+                      <option value="Right-arm Medium" {% if player.bowling_style == "Right-arm Medium" %}selected{% endif %} >Right-arm Medium</option>
+                      <option value="Right-arm Offbreak" {% if player.bowling_style == "Right-arm Offbreak" %}selected{% endif %} >Right-arm Offbreak</option>
+                      <option value="Right-arm Legbreak" {% if player.bowling_style == "Right-arm Legbreak" %}selected{% endif %} >Right-arm Offbreak</option>
+                      <option value="Left-arm Fast-medium" {% if player.bowling_style == "Left-arm Fast-medium" %}selected{% endif %} >Left-arm Fast-medium</option>
+                      <option value="Left-arm Medium" {% if player.bowling_style == "Left-arm Medium" %}selected{% endif %} >Left-arm Medium</option>
+                      <option value="Left-arm Offbreak" {% if player.bowling_style == "Left-arm Offbreak" %}selected{% endif %} >Left-arm Offbreak</option>
+                      <option value="Left-arm Legbreak" {% if player.bowling_style == "Left-arm Legbreak" %}selected{% endif %} >Left-arm Offbreak</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+              
+              <div class="form-group">
+                <label class="control-label">Image</label>
+                <input class="form-control" type="file" name="image">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success" type="submit">Update</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="tile">
+        <h5 class="tile-title">{{player.name}}</h5>
+        <img src="{{player.image.url}}" class="img-thumbnail" style="width:100%; height:180px !important" alt="">
+        <table class="table">
+          <thead>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <td>{{player.name}}</td>
+             </tr>
+            <tr>
+              <th>Team</th>
+              <td>{{player.team.name}}</td>
+             </tr>
+             <tr>
+              <th>Born</th>
+              <td>{{player.address}}</td>
+             </tr>
+             <tr>
+              <th>Age</th>
+              <td>{{player.age}}</td>
+             </tr>
+
+             <tr>
+              <th>Role</th>
+              <td>{{player.role}}</td>
+             </tr>
+
+             <tr>
+              <th>Bat style</th>
+              <td>{{player.batting_style}}</td>
+             </tr>
+
+             <tr>
+              <th>Bowl Style</th>
+              <td>{{player.bowling_style}}</td>
+             </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="tile">
+        <h5 class="tile-title">Batting Statistics</h5>
+        <table class="table">
+          <thead>
+          <tbody>
+            <tr>
+              <th>Mat</th>
+              <td>{{player.match}}</td>
+             </tr>
+             <tr>
+              <th>Inn</th>
+              <td>{{player.ins}}</td>
+             </tr>
+             <tr>
+              <th>Runs</th>
+              <td>{{player.bat_runs}}</td>
+             </tr>
+             <tr>
+              <th>Balls</th>
+              <td>{{player.bat_balls}}</td>
+             </tr>
+
+             <tr>
+              <th>SR</th>
+              <td>{{player.bat_strike_rate}}</td>
+             </tr>
+
+             <tr>
+              <th>HS</th>
+              <td>{{player.bat_high_score}}</td>
+             </tr>
+
+             <tr>
+              <th>Avg</th>
+              <td>{{player.bat_average}}</td>
+             </tr>
+
+
+             <tr>
+              <th>30s</th>
+              <td>{{player.bat_thirty}}</td>
+             </tr>
+             <th>50s</th>
+              <td>{{player.bat_fifty}}</td>
+             </tr>
+
+              <th>4s</th>
+              <td>{{player.bat_fours}}</td>
+             </tr>
+             <th>6s</th>
+              <td>{{player.bat_sixes}}</td>
+             </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="tile">
+        <h5 class="tile-title">Bowling Statistics</h5>
+        <table class="table">
+          <thead>
+          <tbody>
+            <tr>
+              <th>Mat</th>
+              <td>{{player.match}}</td>
+             </tr>
+             <tr>
+              <th>Inn</th>
+              <td>{{player.ins}}</td>
+             </tr>
+             <tr>
+              <th>Wkt</th>
+              <td>{{player.bowl_wicket}}</td>
+             </tr>
+             <tr>
+              <th>Runs</th>
+              <td>{{player.bowl_runs}}</td>
+             </tr>
+             <tr>
+              <th>Balls</th>
+              <td>{{player.bowl_balls}}</td>
+             </tr>
+
+             <tr>
+              <th>Eco</th>
+              <td>{{player.bowl_economy}}</td>
+             </tr>
+
+             <tr>
+              <th>Avg</th>
+              <td>{{player.bowl_average}}</td>
+             </tr>
+
+             <tr>
+              <th>Best</th>
+              <td>{{player.bowl_best_bowling}}</td>
+             </tr>
+
+             <tr>
+              <th>3W</th>
+              <td>{{player.bowl_three_wkt}}</td>
+             </tr>
+             <th>5W</th>
+              <td>{{player.bowl_five_wkt}}</td>
+             </tr>
+
+              
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock main_content %}
+
+
+
+{% block js %}
+<script type="text/javascript" src="{% static 'Admin_App/js/plugins/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'Admin_App/js/plugins/dataTables.bootstrap.min.js' %}"></script>
+<script type="text/javascript">
+  $('#sampleTable').DataTable();
+</script>
+{% endblock js %}

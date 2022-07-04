@@ -1,0 +1,486 @@
+{% extends 'Admin_App/base.html' %}
+
+{% load static %}
+{% block main_content %}
+
+<main class="app-content">  
+    <div class="playing_squard">
+
+    </div>
+    
+</main>
+{% endblock main_content %}
+
+
+
+{% block js %}
+<script type="text/javascript">
+  var BASEURL = "http://127.0.0.1:8008"
+  ///// RUN COUNTER
+  function update_runs(player, score, player_bowl, bowl_score, squardA, squardB, matchinfo,over_details) {
+    // ####### Bolrwe player
+
+    if( ! matchinfo['first_ins_complete']){
+
+            
+            /// match short details 
+            var sc = "";
+            sc += '<div class="col-sm-12" id="match_short_card">'
+            sc += '<h5 class="text-primary">First Innings</h5>'
+            sc += '<div class="clearfix" ></div>'
+
+            sc += '<div style="display: flex;justify-content: space-between;">'
+
+                sc += '<div> '
+                sc += '<i class=""><b>' + matchinfo["first_ins"]['name'] + '</b> <strong> ' + matchinfo["first_ins_runs"] + ' / ' + matchinfo["first_ins_wkts"] + ' (' + matchinfo["first_ins_overs"] + ')</strong></i><br>'
+                sc += '<i class="">CRR<span class="ml-1">' + matchinfo["first_ins_crr"] + '</span></i><br> <i class="">Extras<span class="ml-1">' + matchinfo["first_ins_extra_runs"] + ' (wd-'+matchinfo["first_ins_extra_wd"] +', nb-'+ matchinfo["first_ins_extra_nb"]+', b-'+matchinfo["first_ins_extra_bye"] +')</span></i> <br>'
+                sc += '</div>'
+
+                  sc += '<div>'
+
+                  if (matchinfo["first_ins_complete"]) {
+                    sc += '<i class=""><b>' + matchinfo["second_ins"]['name'] + '</b> <strong> ' + matchinfo["second_ins_runs"] + ' / ' + matchinfo["second_ins_wkts"] + ' (' + matchinfo["second_ins_overs"] + ')</strong></i><br>'
+                    sc += '<i class="">CRR<span class="ml-1">' + matchinfo["second_ins_crr"] + '</span></i> <br> <i class="">Extras<span class="ml-1">' + matchinfo["second_ins_extra_runs"] + ' (wd-'+matchinfo["second_ins_extra_wd"] +', nb-'+ matchinfo["second_ins_extra_nb"]+', b-'+matchinfo["second_ins_extra_bye"] +')</span></i> <br>'
+                  } else {
+                    sc += '<i class=""><b>' + matchinfo["second_ins"]['name'] + '</b></i></br>'
+                  }
+
+                  sc += '</div>'
+
+            sc += '</div>'
+
+            // batting squard 
+
+            sc += '<div class="row mt-2">'
+              sc += '<div class="col-sm-12"> '
+                sc += '<center><h6 class="text-primary mt-2">' + matchinfo["first_ins"]['name'] + ' Batters </h6></center>'
+                sc += '<table class="table table-sm table-bordered">'
+                  sc += '<thead>'
+                    sc += '<tr>'
+                      sc += '<th>Name</th>'
+                      sc += '<th>R</th>'
+                      sc += '<th>B</th>'
+                      sc += '<th>Sr</th>'
+                      sc += '<th>4s</th>'
+                      sc += '<th>6s</th>'
+                    sc += '</tr>'
+                  sc += '</thead>'
+                  sc += '<tbody>'
+                    squardA.forEach(function (item) {
+                      if(item["bat_status"] == "Batting" || item["bat_status"] == "Out" ){
+
+                        if(item["bat_status"] == "Batting" ){
+                        sc += '<tr class="text-success">'
+                          sc += '<td> '+item["player"]["name"]+' </td>'
+                          sc += '<td> '+item["bat_runs"]+' </td>'
+                          sc += '<td> '+item["bat_balls"]+' </td>'
+                          sc += '<td> '+item["bat_strike_rate"]+' </td>'
+                          sc += '<td> '+item["bat_fours"]+' </td>'
+                          sc += '<td> '+item["bat_sixes"]+' </td>'
+                        sc += '</tr>'
+                      }else{
+
+                        sc += '<tr class="text-danger">'
+                          sc += '<td> '+item["player"]["name"]+' </td>'
+                          sc += '<td> '+item["bat_runs"]+' </td>'
+                          sc += '<td> '+item["bat_balls"]+' </td>'
+                          sc += '<td> '+item["bat_strike_rate"]+' </td>'
+                          sc += '<td> '+item["bat_fours"]+' </td>'
+                          sc += '<td> '+item["bat_sixes"]+' </td>'
+                        sc += '</tr>'
+                      }
+
+
+                    }
+                  })
+                  sc += '</tbody>'
+                sc += '</table>'
+          
+              sc += '</div>'
+              sc += '</div>'
+
+              // bowlers 
+              sc += '<div class="row mt-2">'
+              sc += '<div class="col-sm-12">'
+                  sc += '<center><h6 class="text-primary mt-2">' + matchinfo["second_ins"]['name'] + ' Bowlers</h6></center>'
+                  sc += '<table class="table table-sm table-bordered">'
+                    sc += '<thead>'
+                      sc += '<tr>'
+                        sc += '<th>Players</th>'
+                        sc += '<th>Ov</th>'
+                        sc += '<th>Wc</th>'
+                        sc += '<th>Rc</th>'
+                        sc += '<th>Eco</th>'
+                      sc += '</tr>'
+                    sc += '</thead>'
+                    sc += '<tbody>'
+                      squardB.forEach(function (item) {
+                        if(item["bowl_status"] == "Bowling" || item["bowl_status"] == "Recent" || item["bowl_status"] == "Bowled" ){
+
+                          if(item["bowl_status"] == "Bowling"){
+                          sc += '<tr class="text-success">'
+                            sc += '<td> '+item["player"]["name"]+' </td>'
+                            sc += '<td> '+item["bowl_over"]+' </td>'
+                            sc += '<td> '+item["bowl_wicket"]+' </td>'
+                            sc += '<td> '+item["bowl_runs"]+' </td>'
+                            sc += '<td> '+item["bowl_economy"]+' </td>'
+                          sc += '</tr>'
+                          }
+                          else{
+                            sc += '<tr class="text-dark">'
+                              sc += '<td> '+item["player"]["name"]+' </td>'
+                              sc += '<td> '+item["bowl_over"]+' </td>'
+                              sc += '<td> '+item["bowl_wicket"]+' </td>'
+                              sc += '<td> '+item["bowl_runs"]+' </td>'
+                              sc += '<td> '+item["bowl_economy"]+' </td>'
+                            sc += '</tr>'
+                          }
+                        }
+                    })
+                    sc += '</tbody>'
+                  sc += '</table>'
+                sc += '</div>'
+              sc += '</div>'
+
+
+
+              sc += '</div>'
+
+            $('#match_short_card').remove()
+            $('.short_details').empty()
+            $('.short_details').append(sc)
+
+
+
+    //match short details end
+    }
+/// #######################################   END FIRST INS  
+    else{
+
+         /// match short details 
+         var sc = "";
+         sc += '<div class="col-sm-12" id="match_short_card">'
+         sc += '<h5 class="text-primary">Second Innings</h5>'
+         sc += '<div class="clearfix" ></div>'
+
+         sc += '<div style="display: flex;justify-content: space-between;">'
+
+             sc += '<div> '
+              sc += '<i class=""><b>' + matchinfo["second_ins"]['name'] + '</b> <strong> ' + matchinfo["second_ins_runs"] + ' / ' + matchinfo["second_ins_wkts"] + ' (' + matchinfo["second_ins_overs"] + ')</strong></i><br>'
+              sc += '<i class="">CRR<span class="ml-1">' + matchinfo["second_ins_crr"] + '</span></i><br> <i class="">Extras<span class="ml-1">' + matchinfo["second_ins_extra_runs"] + ' (wd-'+matchinfo["second_ins_extra_wd"] +', nb-'+ matchinfo["second_ins_extra_nb"]+', b-'+matchinfo["second_ins_extra_bye"] +')</span></i> <br>'
+             sc += '</div>'
+
+            sc += '<div>'
+              sc += '<i class=""><b>' + matchinfo["first_ins"]['name'] + '</b> <strong> ' + matchinfo["first_ins_runs"] + ' / ' + matchinfo["first_ins_wkts"] + ' (' + matchinfo["first_ins_overs"] + ')</strong></i><br>'
+              sc += '<i class="">CRR<span class="ml-1">' + matchinfo["first_ins_crr"] + '</span></i> <br> <i class="">Extras<span class="ml-1">' + matchinfo["first_ins_extra_runs"] + ' (wd-'+matchinfo["first_ins_extra_wd"] +', nb-'+ matchinfo["first_ins_extra_nb"]+', b-'+matchinfo["first_ins_extra_bye"] +')</span></i> <br>'
+            sc += '</div>'
+
+         sc += '</div>'
+
+         // batting squard 
+
+         sc += '<div class="row mt-2">'
+           sc += '<div class="col-sm-12"> '
+             sc += '<center><h6 class="text-primary mt-2">' + matchinfo["second_ins"]['name'] + ' Batters </h6></center>'
+             sc += '<table class="table table-sm table-bordered">'
+               sc += '<thead>'
+                 sc += '<tr>'
+                   sc += '<th>Name</th>'
+                   sc += '<th>R</th>'
+                   sc += '<th>B</th>'
+                   sc += '<th>Sr</th>'
+                   sc += '<th>4s</th>'
+                   sc += '<th>6s</th>'
+                 sc += '</tr>'
+               sc += '</thead>'
+               sc += '<tbody>'
+                 squardB.forEach(function (item) {
+                   if(item["bat_status"] == "Batting" || item["bat_status"] == "Out" ){
+
+                     if(item["bat_status"] == "Batting" ){
+                     sc += '<tr class="text-success">'
+                       sc += '<td> '+item["player"]["name"]+' </td>'
+                       sc += '<td> '+item["bat_runs"]+' </td>'
+                       sc += '<td> '+item["bat_balls"]+' </td>'
+                       sc += '<td> '+item["bat_strike_rate"]+' </td>'
+                       sc += '<td> '+item["bat_fours"]+' </td>'
+                       sc += '<td> '+item["bat_sixes"]+' </td>'
+                     sc += '</tr>'
+                   }else{
+
+                     sc += '<tr class="text-danger">'
+                       sc += '<td> '+item["player"]["name"]+' </td>'
+                       sc += '<td> '+item["bat_runs"]+' </td>'
+                       sc += '<td> '+item["bat_balls"]+' </td>'
+                       sc += '<td> '+item["bat_strike_rate"]+' </td>'
+                       sc += '<td> '+item["bat_fours"]+' </td>'
+                       sc += '<td> '+item["bat_sixes"]+' </td>'
+                     sc += '</tr>'
+                   }
+
+
+                 }
+               })
+               sc += '</tbody>'
+             sc += '</table>'
+       
+           sc += '</div>'
+           sc += '</div>'
+
+           // bowlers 
+           sc += '<div class="row mt-2">'
+           sc += '<div class="col-sm-12">'
+               sc += '<center><h6 class="text-primary mt-2">' + matchinfo["first_ins"]['name'] + ' Bowlers</h6></center>'
+               sc += '<table class="table table-sm table-bordered">'
+                 sc += '<thead>'
+                   sc += '<tr>'
+                     sc += '<th>Players</th>'
+                     sc += '<th>Ov</th>'
+                     sc += '<th>Wc</th>'
+                     sc += '<th>Rc</th>'
+                     sc += '<th>Eco</th>'
+                   sc += '</tr>'
+                 sc += '</thead>'
+                 sc += '<tbody>'
+                   squardA.forEach(function (item) {
+                     if(item["bowl_status"] == "Bowling" || item["bowl_status"] == "Recent" || item["bowl_status"] == "Bowled" ){
+
+                       if(item["bowl_status"] == "Bowling"){
+                       sc += '<tr class="text-success">'
+                         sc += '<td> '+item["player"]["name"]+' </td>'
+                         sc += '<td> '+item["bowl_over"]+' </td>'
+                         sc += '<td> '+item["bowl_wicket"]+' </td>'
+                         sc += '<td> '+item["bowl_runs"]+' </td>'
+                         sc += '<td> '+item["bowl_economy"]+' </td>'
+                       sc += '</tr>'
+                       }
+                       else{
+                         sc += '<tr class="text-dark">'
+                           sc += '<td> '+item["player"]["name"]+' </td>'
+                           sc += '<td> '+item["bowl_over"]+' </td>'
+                           sc += '<td> '+item["bowl_wicket"]+' </td>'
+                           sc += '<td> '+item["bowl_runs"]+' </td>'
+                           sc += '<td> '+item["bowl_economy"]+' </td>'
+                         sc += '</tr>'
+                       }
+                     }
+                 })
+                 sc += '</tbody>'
+               sc += '</table>'
+             sc += '</div>'
+           sc += '</div>'
+
+
+
+           sc += '</div>'
+
+         $('#match_short_card').remove()
+         $('.short_details').empty()
+         $('.short_details').append(sc)
+    }
+
+    /// match info
+    
+    // ####### Score Board
+
+    var sc = "";
+    sc += '<div class="col-sm-12 tile" id="playing_squard_card">'
+    sc += '<h5 class="float-left">Match Info</h5><small class="float-right"><i><b>' + matchinfo["toss_own"] + '</b></i> Won The Toss And <i><b>' + matchinfo["toss_own_options"] + '</b></i></small>'
+    sc += '<div class="clearfix" ></div>'
+
+    sc += '<div style="display: flex;justify-content: space-between;">'
+
+        sc += '<div> '
+        sc += '<i class=""><b>' + matchinfo["first_ins"]['name'] + '</b> <strong> ' + matchinfo["first_ins_runs"] + ' / ' + matchinfo["first_ins_wkts"] + ' (' + matchinfo["first_ins_overs"] + ')</strong></i><br>'
+        sc += '<i class="">CRR<span class="ml-1">' + matchinfo["first_ins_crr"] + '</span></i><br> <i class="">Extras<span class="ml-1">' + matchinfo["first_ins_extra_runs"] + ' (wd-'+matchinfo["first_ins_extra_wd"] +', nb-'+ matchinfo["first_ins_extra_nb"]+', b-'+matchinfo["first_ins_extra_bye"] +')</span></i> <br>'
+        sc += '</div>'
+
+          sc += '<div>'
+
+          if (matchinfo["first_ins_complete"]) {
+            sc += '<i class=""><b>' + matchinfo["second_ins"]['name'] + '</b> <strong> ' + matchinfo["second_ins_runs"] + ' / ' + matchinfo["second_ins_wkts"] + ' (' + matchinfo["second_ins_overs"] + ')</strong></i><br>'
+            sc += '<i class="">CRR<span class="ml-1">' + matchinfo["second_ins_crr"] + '</span></i> <br> <i class="">Extras<span class="ml-1">' + matchinfo["second_ins_extra_runs"] + ' (wd-'+matchinfo["second_ins_extra_wd"] +', nb-'+ matchinfo["second_ins_extra_nb"]+', b-'+matchinfo["second_ins_extra_bye"] +')</span></i> <br>'
+          } else {
+            sc += '<i class=""><b>' + matchinfo["second_ins"]['name'] + '</b></i></br>'
+          }
+
+          sc += '</div>'
+
+    sc += '</div>'
+    
+   
+    sc += '<div class="row mt-2">'
+    sc += '<div class="col-sm-6"> '
+    sc += '<div class="tile"> '
+      sc += '<center><h6 class="text-primary mt-2">Playing Squard ' + matchinfo["first_ins"]['name'] + '</h6></center>'
+      sc += '<table class="table table-sm table-bordered">'
+        sc += '<thead>'
+          sc += '<tr>'
+            sc += '<th>Players</th>'
+            sc += '<th colspan="5">Batting</th>'
+            sc += '<th colspan="5">Bowling</th>'
+            
+          sc += '</tr>'
+
+          sc += '<tr>'
+            sc += '<th>Name</th>'
+            sc += '<th>R</th>'
+            sc += '<th>B</th>'
+            sc += '<th>Sr</th>'
+            sc += '<th>4s</th>'
+            sc += '<th>6s</th>'
+            sc += '<th>Ov</th>'
+            sc += '<th>Wc</th>'
+            sc += '<th>Rc</th>'
+            sc += '<th>Eco</th>'
+          sc += '</tr>'
+        sc += '</thead>'
+        sc += '<tbody>'
+          squardA.forEach(function (item) {
+            sc += '<tr>'
+              sc += '<td> '+item["player"]["name"]+' </td>'
+              if( parseInt(item["bat_runs"]) > 0 || parseInt(item["bat_balls"]) > 0 ){
+              sc += '<td class="bg-success text-white"> '+item["bat_runs"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_balls"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_strike_rate"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_fours"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_sixes"]+' </td>'
+              }
+              else{
+              sc += '<td> '+item["bat_runs"]+' </td>'
+              sc += '<td> '+item["bat_balls"]+' </td>'
+              sc += '<td> '+item["bat_strike_rate"]+' </td>'
+              sc += '<td> '+item["bat_fours"]+' </td>'
+              sc += '<td> '+item["bat_sixes"]+' </td>'
+              }
+  
+              if(parseFloat(item["bowl_over"]) > 0){
+              sc += '<td class="bg-info text-white"> '+item["bowl_over"]+' </td>'
+              sc += '<td class="bg-info text-white"> '+item["bowl_wicket"]+' </td>'
+              sc += '<td class="bg-info text-white"> '+item["bowl_runs"]+' </td>'
+              sc += '<td class="bg-info text-white"> '+item["bowl_economy"]+' </td>'
+              }
+              else{
+              sc += '<td> '+item["bowl_over"]+' </td>'
+              sc += '<td> '+item["bowl_wicket"]+' </td>'
+              sc += '<td> '+item["bowl_runs"]+' </td>'
+              sc += '<td> '+item["bowl_economy"]+' </td>'
+              }
+            sc += '</tr>'
+        })
+        sc += '</tbody>'
+      sc += '</table>'
+
+    sc += '</div>'
+    sc += '</div>'
+
+    sc += '<div class="col-sm-6">'
+    sc += '<div class="tile">'
+      sc += '<center><h6 class="text-primary mt-2">Playing Squard ' + matchinfo["second_ins"]['name'] + '</h6></center>'
+      sc += '<table class="table table-sm table-bordered">'
+        sc += '<thead>'
+          sc += '<tr>'
+            sc += '<th>Players</th>'
+            sc += '<th colspan="5">Batting</th>'
+            sc += '<th colspan="5">Bowling</th>'
+            
+          sc += '</tr>'
+
+          sc += '<tr>'
+            sc += '<th>Name</th>'
+            sc += '<th>R</th>'
+            sc += '<th>B</th>'
+            sc += '<th>Sr</th>'
+            sc += '<th>4s</th>'
+            sc += '<th>6s</th>'
+            sc += '<th>Ov</th>'
+            sc += '<th>Wc</th>'
+            sc += '<th>Rc</th>'
+            sc += '<th>Eco</th>'
+          sc += '</tr>'
+        sc += '</thead>'
+        sc += '<tbody>'
+          squardB.forEach(function (item) {
+            sc += '<tr>'
+              sc += '<td> '+item["player"]["name"]+' </td>'
+              if( parseInt(item["bat_runs"]) > 0 || parseInt(item["bat_balls"]) > 0 ){
+              sc += '<td class="bg-success text-white"> '+item["bat_runs"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_balls"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_strike_rate"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_fours"]+' </td>'
+              sc += '<td class="bg-success text-white"> '+item["bat_sixes"]+' </td>'
+              }
+              else{
+              sc += '<td> '+item["bat_runs"]+' </td>'
+              sc += '<td> '+item["bat_balls"]+' </td>'
+              sc += '<td> '+item["bat_strike_rate"]+' </td>'
+              sc += '<td> '+item["bat_fours"]+' </td>'
+              sc += '<td> '+item["bat_sixes"]+' </td>'
+              }
+  
+              if(parseFloat(item["bowl_over"]) > 0){
+              sc += '<td class="bg-info text-white"> '+item["bowl_over"]+' </td>'
+              sc += '<td class="bg-info text-white"> '+item["bowl_wicket"]+' </td>'
+              sc += '<td class="bg-info text-white"> '+item["bowl_runs"]+' </td>'
+              sc += '<td class="bg-info text-white"> '+item["bowl_economy"]+' </td>'
+              }
+              else{
+              sc += '<td> '+item["bowl_over"]+' </td>'
+              sc += '<td> '+item["bowl_wicket"]+' </td>'
+              sc += '<td> '+item["bowl_runs"]+' </td>'
+              sc += '<td> '+item["bowl_economy"]+' </td>'
+              }
+            sc += '</tr>'
+        })
+        sc += '</tbody>'
+      sc += '</table>'
+    sc += '</div>'
+    sc += '</div>'
+
+      
+
+    sc += '</div>'
+    sc += '</div>'
+
+    $('#playing_squard_card').remove()
+    $('.playing_squard').empty()
+    $('.playing_squard').append(sc)
+  }
+
+  /// RUN END COUNTER
+  $(document).ready(function () {
+
+    $.ajax({
+      url: "{% url 'loading_livematch' %}",
+      type: "GET",
+      data: {
+        "match_info": "{{match_info.id}}"
+      },
+      cache: false,
+      success: function (result) {
+        if (result["status"]) {
+          var player = result["players"]
+          var score = result["score"]
+          var player_bowl = result["player_bowl"]
+          var bowl_score = result["bowl_score"]
+          var squardA = result["squardA"]
+          var squardB = result["squardB"]
+          var matchinfo = result["matchinfo"]
+          var over_details = result["over_details"]
+          update_runs(player, score, player_bowl, bowl_score, squardA, squardB, matchinfo,over_details)
+
+        }
+        else {
+          console.log(result["message"])
+        }
+
+      }
+    });
+
+  });
+
+
+
+
+</script>
+{% endblock js %}
