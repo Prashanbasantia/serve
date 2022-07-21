@@ -1,0 +1,94 @@
+{% extends 'admin_template/base.html' %}
+{% load static %}
+{% block main_content %}
+
+<main class="app-content">
+  <div class="app-title">
+    <div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+      </ul>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item active"><button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#add_team">Add Service</button>
+      </li>
+    </ul>
+    <div class="modal" id="add_team" >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Service</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          </div>
+          <form method="POST" action="{{service}}" enctype="multipart/form-data">
+          <div class="modal-body">
+              {% csrf_token %}
+              
+              <div class="form-group">
+                <label class="control-label">Vender</label>
+                <select class="form-control" name="vender" required>
+                  {% for v in vender_list %}
+                  <option value="{{v.id}}">{{v.cu.first_name}} {{v.cu.last_name}} ({{v.cu.phone}})</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">Category</label>
+                <select class="form-control" name="category" required>
+                  {% for c in category_list %}
+                  <option value="{{c.id}}">{{c.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tile">
+        <h3 class="tile-title">Service Lists </h3>
+        <table class="table" id="sampleTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Image</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          {% for s in service_list %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td><a href="">{{s.name}}</a></td>
+              <td><a href="">{{s.category.name}}</a></td>
+              <td><img src="{{s.image.url}}" class="rounded-circle border-border-success" width="50px" height="50px" alt="{{s.name}}"></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock main_content %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'admin/js/plugins/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/plugins/dataTables.bootstrap.min.js' %}"></script>
+<script type="text/javascript">
+  $('#sampleTable').DataTable();
+</script>
+{% endblock js %}

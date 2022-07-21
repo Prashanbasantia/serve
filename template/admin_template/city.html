@@ -1,0 +1,75 @@
+{% extends 'admin_template/base.html' %}
+{% load static %}
+{% block main_content %}
+
+<main class="app-content">
+  <div class="app-title">
+    <div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item active"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+      </ul>
+    </div>
+    <ul class="app-breadcrumb breadcrumb">
+      <li class="breadcrumb-item active"><button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#add_team">Add City</button>
+      </li>
+    </ul>
+    <div class="modal" id="add_team" >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add City</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          </div>
+          <form method="POST" action="{{city}}" enctype="multipart/form-data">
+          <div class="modal-body">
+              {% csrf_token %}
+              <div class="form-group">
+                <label class="control-label">City Name</label>
+                <input class="form-control" type="text" name="name" placeholder="Enter City Name">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tile">
+        <h3 class="tile-title">City Lists </h3>
+        <table class="table" id="sampleTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          {% for s in city_list %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td><a href="">{{s.city}}</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock main_content %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'admin/js/plugins/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/plugins/dataTables.bootstrap.min.js' %}"></script>
+<script type="text/javascript">
+  $('#sampleTable').DataTable();
+</script>
+{% endblock js %}

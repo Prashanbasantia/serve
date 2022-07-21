@@ -1,0 +1,284 @@
+{% extends 'vender_template/base.html' %}
+{% load static %}
+{% block main_content %}
+
+<main class="app-content">
+
+  <div class="row">
+    <div class="col-md-2"></div>
+
+    <div class="col-md-8">
+      <div class="tile">
+        <!-- modal start -->
+        <div class="modal" id="edit_profile">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Profile</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">×</span></button>
+              </div>
+
+              <form method="POST" action="{% url 'vender_service' %}"
+                enctype="multipart/form-data">
+                <div class="modal-body">
+                  {% csrf_token %}
+
+                  <div class="row">
+                    <div class="form-group col-sm-12">
+                      <label class="control-label">Service Category</label>
+                      <select class="form-control" name="category" id="category_add" required>
+                        <option selected disabled> Select Service Category</option>
+                        {% for c in category_list %}
+                        <option value="{{c.id}}">{{c.name}}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="price-list-ex">
+  
+                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary" type="submit">Update</button>
+                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+        <!-- modal end -->
+        <h5 class="tile-title">Service <button class="btn btn-outline-primary float-right" type="button"
+            data-toggle="modal" data-target="#edit_profile">Add</button></h5>
+        {% if service_list.count > 0 %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Service</th>
+              <th>price</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in service_list %}
+            <tr>
+              <td>
+                {%if s.category.image %}
+                <img src="{{s.category.image.url}}" height="60px" width="60px" class="img-thumbnail">
+                {% else %}
+                No Image Found
+                {% endif %}
+              </td>
+              <td>{{s.category.name}}</td>
+              <td>
+                {% if s.is_payable %}
+                {% for p in s.price.price %}
+                {{p.time}} - Rs: {{p.price}}<br>
+                {% endfor %}
+                {% else %}
+                free
+                {% endif %}
+              </td>
+              <td>{% if s.is_payable %}
+                <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="modal"
+                  data-target="#edit-service{{s.id}}">Edit</button>
+                {%endif%}
+              </td>
+            </tr>
+            <div class="modal" id="edit-service{{s.id}}">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Service Price</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                  </div>
+                  <form method="POST" action="{% url 'vender_update_service_price' %}">
+                    <div class="modal-body">
+                      <input type="hidden" name="service_id" value="{{s.id}}">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <label class="control-label">Category Name</label>
+                        <input class="form-control" type="text" name="name" value="{{s.category.name}}" disabled>
+                      </div>
+                      {% if s.is_payable%}
+                      <div class="edit-price-list">
+                        {% for p in s.price.price %}
+                        <div class="form-group row mt-2">
+                          <div class="col-sm-6">
+                            <label for="">Time</label>
+                            <input type="text" class="form-control" name="time" placeholder="* hour/day"
+                              value="{{p.time}}" required>
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="">Price</label>
+                            <input type="number" class="form-control" name="price" placeholder="Amount"
+                              value="{{p.price}}" required>
+                          </div>
+                          <div class="col-sm-2">
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      {% endif %}
+
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-primary" type="submit">Update</button>
+                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p>No Service Found</p>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <div class="tile">
+              <h5 class="tile-title">Add New Service</button></h5>
+              <form method="POST" action="{% url 'vender_service' %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="form-group col-sm-12">
+                    <label class="control-label">Service Category</label>
+                    <select class="form-control" name="category" id="category" required>
+                      <option selected disabled> Select Service Category</option>
+                      {% for c in category_list %}
+                      <option value="{{c.id}}">{{c.name}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="price-list">
+
+                </div>
+                <center><button class="btn btn-primary" type="submit">Add Service</button></center>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</main>
+{% endblock main_content %}
+
+
+
+{% block js %}
+<script type="text/javascript">
+    $('#category').on('change', function () {
+        var service_id = this.value;
+        if (service_id) {
+            var data_list = []
+            $.ajax({
+                url: "{% url 'fetch_service_price' %}",
+                type: "POST",
+                data: {
+                    service_id
+                },
+                cache: false,
+                success: function (result) {
+                    const data_list = result.price
+                    if (data_list?.length > 0) {
+                        var html_div = '';
+                        data_list.forEach(function (data) {
+                            html_div += '<div class="form-group row mt-2" >'
+                            html_div += '<div class="col-sm-6">'
+                            html_div += '<label for="">Time</label>'
+                            html_div += '<input type="text" disable class="form-control" name="time" value="' + data.time + '" readonly>'
+                            html_div += '</div>'
+                            html_div += '<div class="col-sm-4">'
+                            html_div += '<label for="">Price</label>'
+                            html_div += '<input type="number" class="form-control" name="price" value="' + data.price + '" required>'
+                            html_div += '</div>'
+                            html_div += ' <div class="col-sm-2">'
+                            html_div += '<input type="button" class="btn btn-danger remove_btn mt-4"  value="Del"> '
+                            html_div += '</div>'
+                            html_div += '</div >'
+                        });
+                        console.log(html_div)
+                        $(".price-list").append(html_div);
+                    }
+                    else {
+                        console.log("emplty", data_list)
+                        $(".price-list").empty();
+                    }
+
+                }
+
+            });
+
+        }
+    });
+
+    $(".price-list").on("click", ".remove_btn", function (event) {
+        $(this).closest(".form-group").remove();
+    });
+
+    $('#category_add').on('change', function () {
+        var service_id = this.value;
+        if (service_id) {
+            var data_list = []
+            $.ajax({
+                url: "{% url 'fetch_service_price' %}",
+                type: "POST",
+                data: {
+                    service_id
+                },
+                cache: false,
+                success: function (result) {
+                    const data_list = result.price
+                    if (data_list?.length > 0) {
+                        var html_div = '';
+                        data_list.forEach(function (data) {
+                            html_div += '<div class="form-group row mt-2" >'
+                            html_div += '<div class="col-sm-6">'
+                            html_div += '<label for="">Time</label>'
+                            html_div += '<input type="text" disable class="form-control" name="time" value="' + data.time + '" readonly>'
+                            html_div += '</div>'
+                            html_div += '<div class="col-sm-4">'
+                            html_div += '<label for="">Price</label>'
+                            html_div += '<input type="number" class="form-control" name="price" value="' + data.price + '" required>'
+                            html_div += '</div>'
+                            html_div += ' <div class="col-sm-2">'
+                            html_div += '<input type="button" class="btn btn-danger remove_btn mt-4"  value="Del"> '
+                            html_div += '</div>'
+                            html_div += '</div >'
+                        });
+                        console.log(html_div)
+                        $(".price-list-ex").append(html_div);
+                    }
+                    else {
+                        console.log("emplty", data_list)
+                        $(".price-list-ex").empty();
+                    }
+
+                }
+
+            });
+
+        }
+    });
+
+    $(".price-list-ex").on("click", ".remove_btn", function (event) {
+        $(this).closest(".form-group").remove();
+    });
+</script>
+{% endblock js %}
