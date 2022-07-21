@@ -129,7 +129,8 @@ def signup(request):
             if settings.DEBUG:
                 print("email opt",email_otp, "phone otp", phone_otp)
             else:
-                semd_register_otp_email(email,email_otp)#call this function from utils.py file to send otp to email
+                print("email opt",email_otp, "phone otp", phone_otp)
+                #semd_register_otp_email(email,email_otp)#call this function from utils.py file to send otp to email
             context = {
                 'first_name':first_name,
                 'last_name':last_name,
