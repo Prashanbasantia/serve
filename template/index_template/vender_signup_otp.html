@@ -1,0 +1,33 @@
+{% extends 'index_template/base.html' %}
+{% load static %}
+{% block content %}
+<section id="down" class="login-area sec-p">
+    <div class="container">
+        <div class="login-form">
+            <h3>Verify OTP</h3>
+            <form action="{% url 'create_user_account' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="fname" value="{{first_name}}" >
+                <input type="hidden" name="lname" value="{{last_name}}" >
+                <input type="hidden" name="email" value="{{email}}" >
+                <input type="hidden" name="phone" value="{{phone}}" >
+                <input type="hidden" name="password" value="{{password}}" >
+                <input type="hidden" name="city" value="{{city}}" >
+                <input type="hidden" name="area" value="{{area}}" >
+                <input type="hidden" name="pincode" value="{{pincode}}" >
+                <input type="hidden" name="address" value="{{address}}"  >
+                <label for="email_otp">Email OTP*
+                    <input type="number" name="email_otp" id="email_otp"  placeholder="Enter Email OTP">
+                </label>
+                <label for="email_otp">Phone OTP*
+                    <input type="number" name="phone_otp" id="phone_otp" placeholder="Enter Phone OTP">
+                </label>
+                <div class="terms-forgot">
+                    <a href="#">Resend OTP</a>
+                </div>
+                <input type="submit" value="Verify OTP">
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}

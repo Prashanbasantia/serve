@@ -20,7 +20,7 @@ from Core import settings
 urlpatterns = [ 
     path('',include("Index_App.urls")),
     path('admin/',include("Admin_App.urls")),
-    #path('vender/',include("Vender_App.urls")),
+    path('vender/',include("Vender_App.urls")),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
 # handler404 = 'Admin_App.admin_views.handler404'

@@ -71,8 +71,6 @@
           <li class="has-child"><a href="{% url 'service' %}">Service</a></li>
           <li><a href="{% url 'aboutus' %}">About Us</a></li>
           <li><a href="{% url 'contactus' %}">Contact Us</a></li>
-          <li><a href="{% url 'faq' %}">FAQ</a></li>
-          <li><a href="{% url 'pricing' %}">Pricing</a></li>
         </ul>
         {% if request.user.is_authenticated %}
         <div class="my-account">
@@ -241,8 +239,6 @@
   </footer>
   <!-- end footer section -->
 
-  <script data-cfasync="false"
-    src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
   <script src="{% static 'index/js/jquery-3.6.0.min.js' %}"></script>
 
   <script src="{% static 'index/js/popper.min.js' %}"></script>
@@ -271,7 +267,4 @@
   {% endblock js %}
     
 </body>
-
-<!-- Mirrored from demo-egenslab.b-cdn.net/html/serve/preview/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jun 2022 06:33:41 GMT -->
-
 </html>

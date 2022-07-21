@@ -179,24 +179,30 @@ class Service(models.Model):
 
 class Order(models.Model):
     id=models.UUIDField(editable=False,primary_key=True)
-    slug = models.SlugField(unique=True)
+    orderid = models.CharField(unique=True, max_length= 100)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    vender = models.ForeignKey(Vender, on_delete=models.CASCADE)
     is_payable = models.BooleanField(default=False)
-    price = models.IntegerField(blank = True)
-    pending = models.IntegerField(blank = True)
-    paid = models.IntegerField(blank = True)
-    image = models.ImageField(upload_to="service/")
+    total_price = models.IntegerField(default=0)
+    day_price = models.IntegerField(default=0)
+    date_today = models.DateField(default = datetime.now)
+    status_type_data=((1,"Running"),(2,"Pending"),(3,"Complete"),(4,"Cancelled"))
+    status=models.CharField(default=2,choices=status_type_data,max_length=1)
+    is_added_today = models.BooleanField(default = False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     def save(self, *args, **kwargs):
         if not self.id:
             self.id = uuid.uuid4()
-            while Service.objects.filter(id=self.id).exists():
+            while Order.objects.filter(id=self.id).exists():
                 self.id = uuid.uuid4()
-            self.slug = slugify(self.name, allow_unicode=True)
-        super(Service, self).save()
+            count = Order.objects.all().count()
+            sytime = datetime.now().strftime("%d%m%Y")
+            self.orderid = f'{sytime}{count}'
+            while Order.objects.filter(orderid = self.orderid).exists():
+                count += 1
+                self.orderid = f'{sytime}{count}'
+        super(Order, self).save()
 
 
 class ForgetpasswordOtp(models.Model):

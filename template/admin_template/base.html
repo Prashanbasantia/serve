@@ -3,40 +3,39 @@
 <html lang="en">
 
 <head>
-  <title>KPL Admin </title>
+  <title>Serve Admin </title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Main CSS-->
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/main.css' %}">
   <!-- Font-icon css-->
-  <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+  <!-- <link href="{% static 'index/css/fontawesome.min.css' %}" rel="stylesheet" /> -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-    <link rel="stylesheet" href="{% static 'Fontawesome/css/all.min.css' %}">
 
 </head>
 
 <body class="app sidebar-mini">
   <!-- Navbar-->
-  <header class="app-header"><a class="app-header__logo" href="index.html">KPL</a>
+  <header class="app-header"><a class="app-header__logo" href="{% url 'admin_dashboard' %}">Serve</a>
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
       aria-label="Hide Sidebar"></a>
     <!-- Navbar Right Menu-->
     <ul class="app-nav">
       <li class="app-search">
-        <input class="app-search__input" type="search" placeholder="Search">
+        <!-- <input class="app-search__input" type="search" placeholder="Search">
         <button class="app-search__button"><i class="fa fa-search"></i></button>
-      </li>
+      </li> -->
       
       <!-- User Menu-->
       <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i
-            class="fa fa-user fa-lg"></i></a>
+            class="fa fa-user-circle fa-lg"></i> Profile</a>
         <ul class="dropdown-menu settings-menu dropdown-menu-right">
-          <li><a class="dropdown-item" href=""><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-          <li><a class="dropdown-item" href=""><i class="fa fa-user fa-lg"></i> Task</a></li>
-          <li><a class="dropdown-item" href=""><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+          <li><a class="dropdown-item" href="{% url 'admin_profile' %}"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
         </ul>
       </li>
     </ul>
@@ -47,33 +46,39 @@
     
     <ul class="app-menu">
       <li>
-        {% url 'dashboard' as dashboard %}
+        {% url 'admin_dashboard' as dashboard %}
         <a class="app-menu__item {% if request.path == dashboard %}active{% endif %}" href="{{dashboard}}"><i class="app-menu__icon fa fa-dashboard"></i>
           <span class="app-menu__label">Dashboard</span> </a>
       </li>
       <li>
         {% url 'admin_vender' as vender %}
-        <a class="app-menu__item {% if request.path == vender %}active{% endif %}" href="{{vender}}"><i class="app-menu__icon fa fa-dashboard"></i>
+        <a class="app-menu__item {% if request.path == vender %}active{% endif %}" href="{{vender}}"><i class="app-menu__icon fa fa-male"></i>
           <span class="app-menu__label">Vender</span> </a>
       </li>
       <li>
-        {% url 'admin_service_category' as service_category %}
-        <a class="app-menu__item {% if request.path == service_category %}active{% endif %}" href="{{service_category}}"><i class="app-menu__icon fa fa-dashboard"></i>
-          <span class="app-menu__label">Category</span> </a>
+        {% url 'admin_customer' as customer_url %}
+        <a class="app-menu__item {% if request.path == customer_url %}active{% endif %}" href="{{customer_url}}"><i class="app-menu__icon fa fa-users"></i>
+          <span class="app-menu__label">Customer</span> </a>
       </li>
       <li>
-        {% url 'admin_service' as service %}
-        <a class="app-menu__item {% if request.path == service %}active{% endif %}" href="{{service}}"><i class="app-menu__icon fa fa-dashboard"></i>
-          <span class="app-menu__label">Service</span> </a>
+        {% url 'admin_order' as order_url %}
+        <a class="app-menu__item {% if request.path == customer_url %}active{% endif %}" href="{{order_url}}"><i class="app-menu__icon fa fa-shopping-bag"></i>
+          <span class="app-menu__label">Order</span> </a>
+      </li>
+
+      <li>
+        {% url 'admin_service_category' as service_category %}
+        <a class="app-menu__item {% if request.path == service_category %}active{% endif %}" href="{{service_category}}"><i class="app-menu__icon fa fa-cog"></i>
+          <span class="app-menu__label">Service Category</span> </a>
       </li>
       <li>
         {% url 'admin_area' as area %}
-        <a class="app-menu__item {% if request.path == area %}active{% endif %}" href="{{area}}"><i class="app-menu__icon fa fa-dashboard"></i>
+        <a class="app-menu__item {% if request.path == area %}active{% endif %}" href="{{area}}"><i class="app-menu__icon fa fa-map-marker"></i>
           <span class="app-menu__label">Area</span> </a>
       </li>
       <li>
         {% url 'admin_city' as city %}
-        <a class="app-menu__item {% if request.path == city %}active{% endif %}" href="{{city}}"><i class="app-menu__icon fa fa-dashboard"></i>
+        <a class="app-menu__item {% if request.path == city %}active{% endif %}" href="{{city}}"><i class="app-menu__icon fa fa-compass"></i>
           <span class="app-menu__label">City</span> </a>
       </li>
     </ul>
@@ -159,7 +164,7 @@
           {% if message.tags == 'error' %}
 
           $.notify({
-            title: "Eroor ",
+            title: "Error ",
             message: "{{message}}",
             icon: 'fa fa-check' 
           },{
@@ -172,13 +177,13 @@
           
           {% elif message.tags == 'success' %}
           $.notify({
-            title: "Created: ",
+            title: "Success: ",
             message: "{{message}}",
             icon: 'fa fa-check' 
           },{
             type: "success",
             placement: {
-              from: "bottom",
+              from: "top",
               align: "right"
             }
           });

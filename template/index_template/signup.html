@@ -10,7 +10,8 @@
             <div class="row mb-4">
                 <button class="btn btn-success col-5">User Signup</button>
                 <span class="col-2"></span>
-                <button class="btn btn-outline-success col-5">Vender Signup</button>
+                <button class="btn btn-outline-success col-5"><a href="{% url 'signup_vender' %}" >Vender Signup</a></button>
+
             </div>
 
             <h3>Create User Account</h3>
@@ -30,7 +31,7 @@
                     </div>
                     <div class="col-12">
                         <label for="email">Email*
-                            <input type="email" name="email" id="email" placeholder="Enter Email Address"  autocomplete="off" required>
+                            <input type="email" name="email" id="email" placeholder="Enter Email Address" autocomplete="off" required>
                         </label>
                         <label for="password">Phone*
                             <input type="text" name="phone" id="phone" placeholder="Enter Your Phone Number" required>

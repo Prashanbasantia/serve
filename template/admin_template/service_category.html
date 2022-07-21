@@ -86,12 +86,13 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Edit Category</h5>
+                    <h5 class="modal-title">Edit Service Category</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
                   </div>
-                  <form method="POST" action="{{service_category}}" enctype="multipart/form-data">
+                  <form method="POST" action="{% url 'admin_update_service_category' %}" enctype="multipart/form-data">
                     <div class="modal-body">
+                      <input type="hidden" name="service_id" value="{{c.id}}">
                       {% csrf_token %}
                       <div class="form-group">
                         <label class="control-label">Category Name</label>
@@ -106,6 +107,7 @@
                       </div>
 
                       {% if c.is_payable%}
+                      <div class="edit-price-list">
                       {% for p in c.price.price %}
                       <div class="form-group row mt-2">
                         <div class="col-sm-6">
@@ -117,15 +119,15 @@
                           <input type="number" class="form-control" name="price" placeholder="Amount" value="{{p.price}}" required>
                         </div>
                         <div class="col-sm-2">
-                          <input type="button" class="btn btn-success mt-4" id="addprice" value="Add">
                         </div>
                       </div>
                       {% endfor %}
+                      </div>
                       {% endif %}
 
                     </div>
                     <div class="modal-footer">
-                      <button class="btn btn-primary" type="submit">Add</button>
+                      <button class="btn btn-primary" type="submit">Update</button>
                       <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
                     </div>
                   </form>
@@ -162,6 +164,7 @@
     $(".price-list").append(html_div);
   });
 
+
   $('input[type="radio"]').click(function () {
 
     if ($(this).attr("value") == "True") {
@@ -189,6 +192,27 @@
 
 
   $(".price-list").on("click", ".remove_btn", function (event) {
+    $(this).closest(".form-group").remove();
+  });
+// edit service 
+
+$("#editaddprice").on("click", function (event) {
+    var html_div = ""
+    html_div += '<div class="form-group row mt-2" >'
+    html_div += '<div class="col-sm-6">'
+    html_div += '<input type="text" class="form-control" name="time" placeholder="* hour/day" required>'
+    html_div += '</div>'
+    html_div += '<div class="col-sm-4">'
+    html_div += '<input type="number" class="form-control" name="price" placeholder="Amount" required>'
+    html_div += '</div>'
+    html_div += ' <div class="col-sm-2">'
+    html_div += '<input type="button" class="btn btn-danger edit_remove_btn"  value="Del"> '
+    html_div += '</div>'
+    html_div += '</div >'
+    $(".edit-price-list").append(html_div);
+  });
+
+  $(".edit-price-list").on("click", ".edit_remove_btn", function (event) {
     $(this).closest(".form-group").remove();
   });
 

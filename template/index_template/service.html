@@ -9,26 +9,26 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="service-multi-slection">
-                            <select class="srv-select" name="city" required>
-                                <option selected disabled >Select City</option>
+                            <select class="nselect srv-select" name="city">
+                                <option value="" >All City</option>
                                 {% for c in city_list %}
-                                <option value="{{c.city}}">{{c.city}}</option>
+                                <option value="{{c.city}}" {% if c.city == city_name %}selected{%endif%}>{{c.city}}</option>
                                 {% endfor %}
                             </select>
-                            <select class="srv-select" name="area" required>
-                                <option selected disabled>Select Area</option>
+                            <select class="nselect srv-select" name="area">
+                                <option value="">All Area</option>
                                 {% for c in area_list %}
-                                <option value="{{c.area}}">{{c.area}}</option>
+                                <option value="{{c.area}}" {% if c.area == area_name %}selected{%endif%}>{{c.area}}</option>
                                 {% endfor %}
                             </select>
-                            <select class="srv-select" name="category" required>
-                                <option selected disabled>Select Category</option>
+                            <select class="nselect srv-select" name="category">
+                                <option value="">All Category</option>
                                 {% for c in category_list %}
-                                <option value="{{c.slug}}">{{c.name}}</option>
+                                <option value="{{c.name}}" {% if c.name == category_name %}selected{%endif%}>{{c.name}}</option>
                                 {% endfor %}
                             </select>
                             <div class="srv-select">
-                                <button class="btn btn-success">Search</button>
+                                <button class="btn btn-success" type="submit">Search</button>
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
             </form>
         </div>
         <div class="container">
-            <div class="row g-4">
+            <div class="row g-4 mb-5">
                 {% for s in service_list %}
 
                 <div class="col-md-6 col-lg-4 wow animate fadeInRight" data-wow-delay="600ms"

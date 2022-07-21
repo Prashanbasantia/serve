@@ -6177,7 +6177,7 @@ only screen and (min-width:768px) and (max-width:991px) {
     background-color: #fff;
     box-shadow: 0 4px 40px rgba(0, 0, 0, .05);
     border-radius: 10px;
-    max-width: 630px;
+    max-width: 730px;
     padding: 55px 50px;
     margin: 0 auto;
     text-align: center
@@ -6259,6 +6259,18 @@ only screen and (min-width:768px) and (max-width:991px) {
     box-sizing: border-box;
     border-radius: 5px;
     height: 50px;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #6c6c6c;
+    padding: 0 20px
+}
+.login-form form label select {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 40px;
     margin-top: 5px;
     font-size: 14px;
     color: #6c6c6c;
@@ -7324,7 +7336,7 @@ only screen and (min-width:768px) and (max-width:991px) {
 
 .book-btn a {
     position: relative;
-    background-color: #142935;
+    background-color: #5bb543;
     border-radius: 5px;
     display: block;
     text-align: center;

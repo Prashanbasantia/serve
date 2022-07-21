@@ -9,7 +9,7 @@
             <form action="{% url 'login' %}" method="POST">
                 {% csrf_token %}
                 <label for="email">Email or Mobile*
-                    <input type="email" name="email" id="email" placeholder="Enter Your Email or Mobile">
+                    <input type="text" name="email" id="email" placeholder="Enter Your Email or Mobile">
                 </label>
                 <label for="password">Password*
                     <i class="bi bi-eye-slash" id="togglePassword"></i>

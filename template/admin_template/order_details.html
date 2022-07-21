@@ -1,0 +1,43 @@
+{% extends 'admin_template/base.html' %}
+{% load static %}
+{% block main_content %}
+
+<main class="app-content">
+
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="tile">
+        <h5 class="tile-title">Order Details</h5>
+        <ul>
+          <li class="my-2"><strong>Service</strong> : {{order_details.service.category.name}}</li>
+          <li class="my-2"><strong>Status</strong> : {% if order_details.status == '1' %} Running
+            {% elif order_details.status == '2' %}Pending
+            {% elif order_details.status == '3' %} Complete
+            {% else %}
+            Cancelled
+            {% endif %}
+          </li>
+          <li class="my-2"><strong>Vender</strong> : {{order_details.service.vender.cu.first_name}} {{order_details.service.vender.cu.last_name}} </li>
+          <li class="my-2"><strong>Customer</strong> : {{order_details.customer.cu.first_name}} {{order_details.customer.cu.last_name}} </li>
+          <li class="my-2"><strong>Price</strong> : {{order_details.total_price}} </li>
+          <li class="my-2"><strong>Date </strong> : {{order_details.created_at}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</main>
+{% endblock main_content %}
+
+
+
+{% block js %}
+<script type="text/javascript" src="{% static 'admin/js/plugins/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/plugins/dataTables.bootstrap.min.js' %}"></script>
+<script type="text/javascript">
+
+  $('#sampleTable').DataTable();
+
+</script>
+{% endblock js %}
