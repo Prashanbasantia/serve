@@ -18,7 +18,7 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-#read .env files
+# read .env files
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -42,8 +42,8 @@ DEBUG = env('DEBUG')
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-if DEBUG: 
-    ALLOWED_HOSTS = [ ]
+if DEBUG:
+    ALLOWED_HOSTS = []
 else:
     ALLOWED_HOSTS = ['*']
 
@@ -126,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # custom default model backend and model
 
 AUTH_USER_MODEL = 'Admin_App.CustomUser'
-AUTHENTICATION_BACKENDS=['Admin_App.AuthBackend.Login']
+AUTHENTICATION_BACKENDS = ['Admin_App.AuthBackend.Login']
 
 
 # Internationalization
@@ -141,18 +141,17 @@ USE_I18N = True
 USE_TZ = False
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-STATIC_URL='/static/'
-STATIC_ROOT=os.path.join(BASE_DIR,'root')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'root')
 STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static')
-    ]
+    os.path.join(BASE_DIR, 'static')
+]
 
 # media files uploaded file
-MEDIA_URL='/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,"media/")
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -164,8 +163,8 @@ EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 EMAIL_PORT = env("EMAIL_PORT")
-EMAIL_HOST_USER =env("EMAIL_HOST_USER")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-EMAIL_FROM_BILLING= env("EMAIL_FROM_BILLING")
-EMAIL_REPLY_TO= env("EMAIL_REPLY_TO")
+EMAIL_FROM_BILLING = env("EMAIL_FROM_BILLING")
+EMAIL_REPLY_TO = env("EMAIL_REPLY_TO")
 #####################################################

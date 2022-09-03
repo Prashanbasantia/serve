@@ -3,15 +3,12 @@
 
 {% block content %}
 
-<section class="hero-area">
+<!-- <section class="hero-area">
     <div class="container-fluid">
         <div class="hero-wrapper">
             <div class="hero-content wow animate fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms">
                 <span>Wellcome Our Service Sale</span>
                 <h1>Nonstop Services Life Better.</h1>
-                <!-- <p>Aenean fermentum sapien ac aliquet gravida. Fusce a ipsum metus. answerala and
-                    Suspendisse potenti. Nullam ac lorem ex. Ut feugiat maximus ante, vel gravida exel
-                    volutpat at.</p> -->
                 <div class="find-service">
                     <div class="suggest">
                         <span>Suggest For You:</span>
@@ -29,14 +26,49 @@
             </div>
         </div>
     </div>
+</section> -->
+
+<section class="hero-area-two">
+    <div class="container-fluid p-0">
+        <div class="hero-wrapper two">
+            <div class="hero-banner">
+                <img src="{% static 'index/images/home2/hero-banner.png' %}" alt="">
+            </div>
+            <div class="hero-content">
+                <h5>Restless Services into the Convenience</h5>
+                <div class="find-service">
+                    <div class="suggest">
+                        <ul class="suggest-list">
+                            <li>
+                                <a href="service.html">
+                                    <img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
+                                    Beauty & Salon</a>
+                            </li>
+                            <li>
+                                <a href="service.html"><img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
+                                    Shifting</a>
+                            </li>
+                            <li>
+                                <a href="service.html"><img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
+                                    AC Repair</a>
+                            </li>
+                            <li>
+                                <a href="service.html"><img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
+                                    WallPainting</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section class="popular-services sec-m-top">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="sec-title layout-1 wow animate fadeInUp" data-wow-delay="200ms"
-                    data-wow-duration="1500ms">
+                <div class="sec-title layout-1 wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
                     <div class="title-left">
                         <span>Services</span>
                         <h2>Our Popular Services</h2>
@@ -52,14 +84,14 @@
             {% for s in service_category_list %}
             <div class="col-md-6 col-lg-4 wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
                 <div class="single-service">
-                    
+
                     <div class="thumb">
                         <a href="{% url 'service_details' id=s.id %}"><img src="{{s.image.url}}" alt=""></a>
                         <div class="tag">
                             <a href="{% url 'service_details' id=s.id %}">10 Venders</a>
                         </div>
                     </div>
-                    
+
                     <div class="single-inner">
                         <h4><a href="{% url 'service_details' id=s.id %}">{{s.name}}</a></h4>
                         <div class="started">
@@ -81,8 +113,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="sec-title layout-1 wow animate fadeInUp" data-wow-delay="200ms"
-                    data-wow-duration="1500ms">
+                <div class="sec-title layout-1 wow animate fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms">
                     <div class="title-left">
                         <span>Vender</span>
                         <h2>Our Popular Vendor</h2>
@@ -98,8 +129,7 @@
             <div class="swiper-wrapper">
                 {% for v in popular_vender%}
                 <div class="swiper-slide">
-                    <div class="single-shop wow animate fadeInLeft" data-wow-delay="200ms"
-                        data-wow-duration="1500ms">
+                    <div class="single-shop wow animate fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms">
                         <div class="shop-thumb">
                             {% if v.profile_photo %}
                             <img src="{{v.profile_photo.url}}" alt="">
@@ -155,8 +185,8 @@
                                     Ensuring Masks
                                 </button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show"
-                                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     Aenean fermentum sapien ac aliquet gravida. Fusce a ipsum metus. tolad Aenean
                                     fermentum sapien ac aliquet gravida. Fusce a ipsum metus. tolad answerala
@@ -183,13 +213,12 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingThree">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree">
+                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                     Sanitising Hands
                                 </button>
                             </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse"
-                                aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     Aenean fermentum sapien ac aliquet gravida. Fusce a ipsum metus. tolad Aenean
                                     fermentum sapien ac aliquet gravida. Fusce a ipsum metus. tolad answerala
@@ -354,4 +383,3 @@
 
 
 {% endblock content %}
-    
