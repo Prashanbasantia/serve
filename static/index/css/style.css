@@ -3,7 +3,7 @@
 :root {
     --pink: #ce1567;
     --green: #5bb543;
-  }
+}
 
 * {
     margin: 0;
@@ -1886,13 +1886,14 @@ only screen and (min-width:768px) and (max-width:991px),
     font-size: 20px;
     color: var(--green)
 }
+
 .single-service .single-inner .started .tag a {
     font-family: rubik, sans-serif;
     font-weight: 500;
     font-size: 11px;
     text-align: center;
     color: #fff !important;
-    background-color:  #5bb543;
+    background-color: #5bb543;
     border: 1px solid var(--green);
     padding: 10px 10px;
     border-radius: 5%;
@@ -3175,7 +3176,6 @@ footer .line-shape {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, .15)
 }
 
 @media only screen and (min-width:1400px) and (max-width:1699px),
@@ -6264,6 +6264,7 @@ only screen and (min-width:768px) and (max-width:991px) {
     color: #6c6c6c;
     padding: 0 20px
 }
+
 .login-form form label select {
     width: 100%;
     background-color: #fff;
@@ -7270,6 +7271,7 @@ only screen and (min-width:768px) and (max-width:991px) {
     border-radius: 5px;
     margin-bottom: 40px
 }
+
 .service-widget-premium {
     background-color: #e6f3e2;
     box-shadow: 0 4px 40px rgba(0, 0, 0, .05);
@@ -7277,7 +7279,8 @@ only screen and (min-width:768px) and (max-width:991px) {
     margin-bottom: 40px
 }
 
-.service-widget:last-child, .service-widget-premium  {
+.service-widget:last-child,
+.service-widget-premium {
     margin-bottom: 0
 }
 
@@ -7292,6 +7295,7 @@ only screen and (min-width:768px) and (max-width:991px) {
     padding: 15px 30px;
     margin: 0
 }
+
 .service-pack-premium>h4 {
     background-color: #5bb543;
     border-radius: 5px;
@@ -7304,7 +7308,8 @@ only screen and (min-width:768px) and (max-width:991px) {
     margin: 0
 }
 
-.service-pack>h4 span, .service-pack-premium>h4 span {
+.service-pack>h4 span,
+.service-pack-premium>h4 span {
     font-weight: 700;
     font-size: 25px;
     text-transform: capitalize;
@@ -7313,24 +7318,28 @@ only screen and (min-width:768px) and (max-width:991px) {
     right: 30px
 }
 
-.service-pack>h4 span sub, .service-pack-premium>h4 span sub {
+.service-pack>h4 span sub,
+.service-pack-premium>h4 span sub {
     bottom: 0;
     font-size: 18px
 }
 
-.service-pack .package, .service-pack-premium .package {
+.service-pack .package,
+.service-pack-premium .package {
     padding: 30px;
     margin: 0
 }
 
-.service-pack .package h4, .service-pack-premium .package h4 {
+.service-pack .package h4,
+.service-pack-premium .package h4 {
     color: #142935;
     font-family: teko, sans-serif;
     font-weight: 600;
     font-size: 22px
 }
 
-.book-btn, .book-btn-premium {
+.book-btn,
+.book-btn-premium {
     padding: 0 30px 30px
 }
 
@@ -7348,6 +7357,7 @@ only screen and (min-width:768px) and (max-width:991px) {
     overflow: hidden;
     z-index: 1
 }
+
 .book-btn-premium a {
     position: relative;
     background-color: #5bb543;
@@ -7362,6 +7372,7 @@ only screen and (min-width:768px) and (max-width:991px) {
     overflow: hidden;
     z-index: 1
 }
+
 .udlink a {
     text-decoration-line: underline;
     color: #5bb543 !important;

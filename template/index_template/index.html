@@ -13,10 +13,10 @@
                     <div class="suggest">
                         <span>Suggest For You:</span>
                         <ul class="suggest-list">
-                            <li><a href="service.html">House Maid</a></li>
-                            <li><a href="service.html">Plumbing</a></li>
-                            <li><a href="service.html">AC Repair</a></li>
-                            <li><a href="service.html">WallPainting</a></li>
+                            <li><a href="{% url 'service' %}">House Maid</a></li>
+                            <li><a href="{% url 'service' %}">Plumbing</a></li>
+                            <li><a href="{% url 'service' %}">AC Repair</a></li>
+                            <li><a href="{% url 'service' %}">WallPainting</a></li>
                         </ul>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
     <div class="container-fluid p-0">
         <div class="hero-wrapper two">
             <div class="hero-banner">
-                <img src="{% static 'index/images/home2/hero-banner.png' %}" alt="">
+                <img src="{% static 'index/images/home-1/hero-section-right-img.png' %}" alt="">
             </div>
             <div class="hero-content">
                 <h5>Restless Services into the Convenience</h5>
@@ -40,21 +40,24 @@
                     <div class="suggest">
                         <ul class="suggest-list">
                             <li>
-                                <a href="service.html">
+                                <a href="{% url 'service'%}?city=&area=&category=House Maid">
                                     <img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
-                                    Beauty & Salon</a>
+                                    House Maid</a>
                             </li>
                             <li>
-                                <a href="service.html"><img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
-                                    Shifting</a>
+                                <a href="{% url 'service'%}?city=&area=&category=Elderly Care"><img
+                                        src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
+                                    Elderly Care</a>
                             </li>
                             <li>
-                                <a href="service.html"><img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
-                                    AC Repair</a>
+                                <a href="{% url 'service'%}?city=&area=&category=Plumber"><img
+                                        src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
+                                    Plumber</a>
                             </li>
                             <li>
-                                <a href="service.html"><img src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
-                                    WallPainting</a>
+                                <a href="{% url 'service'%}?city=&area=&category=Electrician"><img
+                                        src="{% static 'index/images/icons/choose-icon-1.jpg'%}">
+                                    Electrician</a>
                             </li>
                         </ul>
                     </div>
@@ -75,7 +78,8 @@
                     </div>
                     <div class="title-right">
                         <strong>Popular Services</strong>
-                        <a href="service.html">View All Services<span><i class="bi bi-arrow-right"></i></span></a>
+                        <a href="{% url 'service' %}">View All Services<span><i
+                                    class="bi bi-arrow-right"></i></span></a>
                     </div>
                 </div>
             </div>
@@ -86,17 +90,17 @@
                 <div class="single-service">
 
                     <div class="thumb">
-                        <a href="{% url 'service_details' id=s.id %}"><img src="{{s.image.url}}" alt=""></a>
+                        <a><img src="{{s.image.url}}" alt=""></a>
                         <div class="tag">
-                            <a href="{% url 'service_details' id=s.id %}">10 Venders</a>
+                            <a>10 Venders</a>
                         </div>
                     </div>
 
                     <div class="single-inner">
-                        <h4><a href="{% url 'service_details' id=s.id %}">{{s.name}}</a></h4>
+                        <h4><a href="{% url 'service'%}?city=&area=&category={{s.name}}">{{s.name}}</a></h4>
                         <div class="started">
                             <span></span>
-                            <a href="{% url 'service_details' id=s.id %}">View Details</a>
+                            <a href="{% url 'service'%}?city=&area=&category={{s.name}}">View Details</a>
                         </div>
                     </div>
                 </div>
